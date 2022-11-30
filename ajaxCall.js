@@ -70,4 +70,40 @@ $(document).ready(function(){
       };
     };
   });
-  
+
+
+  $(document).ready(function(){
+    $('#deleteMessage').click(function(e){
+        e.preventDefault();
+
+        var url = $('form').serialize();
+
+        function getUrlVars(url) {
+            var hash;
+            var myJson = {};
+            var hashes = url.slice(url.indexOf('?') + 1).split('&');
+            for (var i = 0; i < hashes.length; i++) {
+                hash = hashes[i].split('=');
+                myJson[hash[0]] = hash[1];
+            }
+            return JSON.stringify(myJson);
+        }
+
+        var test = getUrlVars(url);
+
+        $.ajax({
+            type:"GET",
+            url: "http://localhost/php_projeto/PDWA5-projeto/api/post/delete.php",
+            data: test,
+            ContentType:"application/json",
+
+            success:function(){
+                alert('Deletado com sucesso');
+            },
+            error:function(){
+                alert('Falha ao deletar');
+            }
+
+        });
+    });
+});
