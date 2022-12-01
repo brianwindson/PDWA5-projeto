@@ -1,0 +1,423 @@
+openapi: 3.0.3
+info:
+  title: Projeto PDWA2
+  version: 1.0.11
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+externalDocs:
+  description: Github
+  url: http://github.com/brianwindson
+servers:
+  - url: http://localhost/php_projeto/PDWA5-projeto/
+    variables: {}
+  - url: http://localhost/php_projeto/PDWA5-projeto/
+    variables: {}
+tags:
+  - name: post
+    description: postagens no blog
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+  - name: category
+    description: categorias
+    externalDocs:
+      description: Find out more about our store
+      url: http://swagger.io
+  - name: author
+    description: autores do blog
+paths:
+  /api/post/create.php:
+    post:
+      tags:
+        - post
+      summary: Novo post
+      description: Cria nova postagem no blog
+      operationId: postMessage
+      requestBody:
+        description: informacoes sobre a postagem
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/Post'
+          application/xml:
+            schema:
+                $ref: '#/components/schemas/Post'
+          application/x-www-form-urlencoded:
+            schema:
+                $ref: '#/components/schemas/Post'
+        required: true
+      responses:
+        '200':
+          description: Postado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Post'
+
+        '404':
+          description: Post nao encontrado
+        '405':
+          description: Validation exception
+
+
+  /api/post/read.php:
+    get:
+      tags:
+        - post
+      summary: Busca todas as postagens
+      description: Trás todas as postagens na db, em ordem de ID
+      operationId: getMessage
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post' 
+        '400':
+          description: Invalid ID value
+ 
+  /api/post/read_single.php:
+    get:
+      tags:
+        - post
+      summary: Busca postagem por ID
+      description: devolve somente a postagem com o ID inserido
+      operationId: readSingle
+      parameters:
+        - name: tags
+          in: query
+          description: Id to filter by
+          required: true
+          schema:
+            type: integer
+            format: int64
+
+      responses:
+        '200':
+          description: Post encontrado com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        '400':
+          description: ID invalido
+      
+  /api/post/delete.php:
+    delete:
+      tags:
+        - post
+      summary: Deleta postagem por ID
+      operationId: deletePost
+      parameters:
+        - name: id 
+          in: query
+          description: ID da postagem
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Categoria deletada
+          
+        '400':
+          description: Erro ao deletar
+  /api/post/update:      
+    put:
+      tags:
+        - post
+      summary: Atualiza um post
+      description: ''
+      parameters:
+        - name: id
+          in: query
+          description: ID do post
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '405':
+          description: Nao postado
+     
+  /api/author/create.php:
+    post:
+      tags:
+        - author
+      summary: Novo autor
+      description: Cria novo autor no blog
+      requestBody:
+        description: informacoes sobre autor
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/Author'
+          application/xml:
+            schema:
+                $ref: '#/components/schemas/Author'
+          application/x-www-form-urlencoded:
+            schema:
+                $ref: '#/components/schemas/Author'
+        required: true
+      responses:
+        '200':
+          description: criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Author'
+
+        '404':
+          description: autor nao encontrado
+        '405':
+          description: Validation exception
+
+
+  /api/author/read.php:
+    get:
+      tags:
+        - author
+      summary: Busca todos os autores
+      description: Tras todos autores na db, em ordem de ID
+      operationId: getAuthor
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author' 
+        '400':
+          description: Invalid ID value
+ 
+  /api/author/read_single.php:
+    get:
+      tags:
+        - author
+      summary: Busca autor por ID
+      description: devolve somente a autor com o ID inserido
+      operationId: readSingleAuthor
+      parameters:
+        - name: tags
+          in: query
+          description: Id to filter by
+          required: true
+          schema:
+            type: integer
+            format: int64
+
+      responses:
+        '200':
+          description: autor encontrado com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+        '400':
+          description: ID invalido
+      
+  /api/author/delete.php:
+    delete:
+      tags:
+        - author
+      summary: Deleta postagem por ID
+      operationId: deleteAuthor
+      parameters:
+        - name: id 
+          in: query
+          description: ID da authoragem
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Categoria deletada
+          
+        '400':
+          description: Erro ao deletar
+  /api/author/update:      
+    put:
+      tags:
+        - author
+      summary: Atualiza um author
+      description: ''
+      parameters:
+        - name: id
+          in: query
+          description: ID do author
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '405':
+          description: Nao postado
+
+  /api/category/create.php:
+    post:
+      tags:
+        - category
+      summary: Nova categoria
+      description: Cria nova categoria no blog
+      requestBody:
+        description: informacoes sobre categoria
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/Category'
+          application/xml:
+            schema:
+                $ref: '#/components/schemas/Category'
+          application/x-www-form-urlencoded:
+            schema:
+                $ref: '#/components/schemas/Category'
+        required: true
+      responses:
+        '200':
+          description: criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Category'
+
+        '404':
+          description: categoria nao criada
+        '405':
+          description: Validation exception
+
+  /api/category/read.php:
+    get:
+      tags:
+        - category
+      summary: Busca todos os categorias
+      description: Tras todos categorias na db, em ordem de ID
+      operationId: getCategory
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+        '400':
+          description: Invalid ID value
+          
+components:
+  schemas:
+   
+    
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        title:
+          type: string
+          example: Post de anime
+        body:
+          type: string
+          example: Gundam é um anime de robo gigante bem legal
+        category_id:
+          type: integer
+          format: int64
+          example: 3
+        author_id:
+          type: integer
+          format: int64
+          example: 5
+      xml:
+        name: post
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: Anime
+        created_at:
+          type: string
+          format: date-time
+      xml:
+        name: category
+    
+    Author:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        name:
+          type: string
+          example: Geordi LaForge
+        email:
+          type: string
+          example: laforge@enterprise.com
+          xml:
+            wrapped: true
+          items:
+            type: string
+            xml:
+              name: photoUrl
+        
+      xml:
+        name: author
+
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
