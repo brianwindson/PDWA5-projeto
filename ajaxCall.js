@@ -1,6 +1,5 @@
-
-
 $(document).ready(function(){
+
     $('#postMessage').click(function(e){
         e.preventDefault();
 
@@ -21,7 +20,7 @@ $(document).ready(function(){
 
         $.ajax({
             type:"POST",
-            url: " http://localhost/php_projeto/PDWA5-projeto/api/post/create.php",
+            url: "/php_projeto/PDWA5-projeto/api/post/create.php",
             data: test,
             ContentType:"application/json",
 
@@ -35,15 +34,12 @@ $(document).ready(function(){
         });
     });
 });
-    
-
-
   document.addEventListener('DOMContentLoaded',function(){
   document.getElementById('getMessage').onclick=function(){
        
        var req;
        req=new XMLHttpRequest();
-       req.open("GET", 'http://localhost/php_projeto/PDWA5-projeto/api/post/read.php',true);
+       req.open("GET", '/php_projeto/PDWA5-projeto/api/post/read.php',true);
        req.send();
       
        req.onload=function(){
@@ -71,7 +67,37 @@ $(document).ready(function(){
     };
   });
 
+document.getElementById('readSingle').onclick=function(){
+       
+       var req;
+       req=new XMLHttpRequest();
+       req.open("GET", '/php_projeto/PDWA5-projeto/api/post/read.php',true);
+       req.send();
+      
+       req.onload=function(){
+       var json=JSON.parse(req.responseText);
 
+       //limit data called
+       var son = json.filter(function(val) {
+              return (val.id >= 4);  
+          });
+
+      var html = "";
+
+      son.forEach(function(val) {
+          var keys = Object.keys(val);
+
+          html += "<div class = 'cat'>";
+              keys.forEach(function(key) {
+              html += "<strong>" + key + "</strong>: " + val[key] + "<br>";
+              });
+          html += "</div><br>";
+      });
+
+      document.getElementsByClassName('message')[0].innerHTML=html;         
+      };
+    };
+ 
   $(document).ready(function(){
     $('#deleteMessage').click(function(e){
         e.preventDefault();
@@ -92,8 +118,8 @@ $(document).ready(function(){
         var test = getUrlVars(url);
 
         $.ajax({
-            type:"GET",
-            url: "http://localhost/php_projeto/PDWA5-projeto/api/post/delete.php",
+            type:"DELETE",
+            url: "/php_projeto/PDWA5-projeto/api/post/delete.php",
             data: test,
             ContentType:"application/json",
 
